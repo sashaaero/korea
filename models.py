@@ -44,5 +44,7 @@ class Transaction(db.Entity):
 class Developer(db.Entity):
     id = PrimaryKey(int, auto=True)
     title = Required(str)
+    email = Required(str)
+    pwd = Required(str)
     games = Set(Game)
     description = Optional(str)
