@@ -9,8 +9,11 @@ class User(db.Entity, UserMixin):
     login = Required(str)
     email = Required(str)
     pwd = Required(str)
+    is_developer = Required(bool, default=False)
+    description = Optional(str)  # dev desc
     scores = Set('Score')
-    games = Set('Game')
+    games_owned = Set('Game', reverse='users')
+    games_created = Set('Game', reverse='developer')
     transactions = Set('Transaction')
 
 
@@ -22,7 +25,7 @@ class Game(db.Entity):
     scores = Set('Score')
     users = Set(User)
     price = Optional(int)
-    developer = Required('Developer')
+    developer = Required(User)
 
 
 class Score(db.Entity):
@@ -38,13 +41,4 @@ class Transaction(db.Entity):
     type = Required(str)
     value = Required(int)
     user = Required(User)
-    description = Optional(str)
-
-
-class Developer(db.Entity):
-    id = PrimaryKey(int, auto=True)
-    title = Required(str)
-    email = Required(str)
-    pwd = Required(str)
-    games = Set(Game)
     description = Optional(str)

@@ -40,25 +40,25 @@ def pwd_match_check(form, field):
 
 def dev_title_free(form, field):
 	title = field.data
-	check = Developer.get(title=title)
+	check = User.get(login=title)
 	if check is not None:
 		raise ValidationError('Title is already in use')
 
 def dev_email_free(form, field):
 	email = field.data
-	check = Developer.get(email=email)
+	check = User.get(email=email)
 	if check is not None:
 		raise ValidationError('E-mail is already in use')
 
 def dev_title_check(form, field):
 	title = field.data
-	check = Developer.get(title=title)
+	check = User.get(login=title)
 	if check is None:
 		raise ValidationError('Title %r was not found' % title)
 
 def dev_pwd_check(form, field):
 	pwd = field.data
-	dev = Developer.get(title=form.title.data)
+	dev = User.get(login=form.title.data)
 	if dev.pwd != pwd:
 		raise ValidationError('Password do not match. Try again')
 
@@ -85,3 +85,9 @@ class DevRegForm(Form):
 class DevLoginForm(Form):
 	title = StringField('Title', [InputRequired(), dev_title_check])
 	pwd = PasswordField('Password', [InputRequired(), dev_pwd_check])
+
+
+class DevNewGameForm(Form):
+	title = StringField('Title', [InputRequired()])
+	description = StringField('Description', [InputRequired()])
+	image = FileField('Image')
