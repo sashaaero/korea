@@ -1,5 +1,51 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+    <h3>СДЕЛАТЬ ФИЛЬТР-ПОИСК!!! (стырить с курсача елкина)</h3>
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<table class="table">
+<thead>
+<tr>
+    <th>
+        Developer
+    </th>
+    <th>
+        Game
+    </th>
+    <th>
+        Rating
+    </th>
+    <th>
+        Price
+    </th>
+    <th>
+        Game page
+    </th>
+</tr>
+</thead>
+    {% for game in games %}
+        <tr>
+        <td>
+            {{ game.developer.login }}
+        </td>
+        <td>
+            {{ game.title }}
+        </td>
+        <td>
+            {{ (sum(game.scores.values) / game.scores|length) if game.scores|length != 0 else 0.0 }}
+        </td>
+        <td>
+            {{ game.price }}
+        </td>
+        <td>
+            <a href="{{ url_for('game', id=game.id) }}">Visit</a>
+        </td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+</div>
 {% endblock %}

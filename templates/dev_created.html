@@ -1,5 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<table class="table">
+{% for game in games %}
+    <tr>
+        <td>
+            {{ game.title }}
+        </td>
+        <td class="text-center">
+            Rating: {{ (sum(game.scores.value) / game.scores|length ) if game.scores|length != 0 else 0.0 }}
+        </td>
+        <td class="text-right">
+            <a href="{{ url_for('dev_game', id=game.id) }}">Edit</a>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+</div>
+</div>
 
 {% endblock %}

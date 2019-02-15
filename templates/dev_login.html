@@ -13,27 +13,27 @@
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
         	<div class="panel panel-default">
         		<div class="panel-heading">
-			    		<h3 class="panel-title">Login as company</h3>
-			 			</div>
-			 			<div class="panel-body">
-			    		<form role="form" method="POST">
-                            <div class="form-group">
-                                <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Login">
-                                {% if 'title' in form.errors %}
-                                    <small class="text-danger">{{ form.errors['title'][0] }}</small>
-                                {% endif %}
-                            </div>
-
-                            <div class="form-group">
-                                <input type="password" name="pwd" id="pwd" class="form-control input-sm" placeholder="Password">
-                            </div>
-                            {% if 'pwd' in form.errors %}
-                                <small class="text-danger">{{ form.errors['pwd'][0] }}</small>
+                    <h3 class="panel-title">Login as company</h3>
+                    </div>
+                    <div class="panel-body">
+                    <form role="form" method="POST">
+                        <div class="form-group">
+                            <input type="text" name="title" id="title" class="form-control input-sm" placeholder="Company name">
+                            {% if 'title' in form.errors %}
+                                <small class="text-danger">{{ form.errors['title'][0] }}</small>
                             {% endif %}
-			    			<input type="submit" value="Login" class="btn btn-info btn-block">
-			    		</form>
-                        <br>
-                        <p align="center"><a href="{{ url_for('login') }}">for regular users</a></p>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" name="pwd" id="pwd" class="form-control input-sm" placeholder="Password">
+                        </div>
+                        {% if 'pwd' in form.errors %}
+                            <small class="text-danger">{{ form.errors['pwd'][0] }}</small>
+                        {% endif %}
+                        <input type="submit" value="Login" class="btn btn-info btn-block">
+                    </form>
+                    <br>
+                    <p align="center"><a href="{{ url_for('login') }}">for regular users</a></p>
 			    	</div>
 	    		</div>
     		</div>

@@ -58,7 +58,8 @@ def library():
 
 @app.route('/store')
 def store():
-    return render_template('store.html', user=current_user)
+    games = Game.select().order_by(Game.title)
+    return render_template('store.html', user=current_user, games=games)
 
 @app.route('/game/<int:id>')
 def game(id):
@@ -96,14 +97,25 @@ def dev_login():
 def created():
     if not current_user.is_developer:
         return redirect(url_for('index'))
-    return render_template('dev_created.html', user=current_user)
 
-@app.route('/dev/game/new')
+    games = select(g for g in Game if g.developer == current_user).prefetch(Score)[:]
+    return render_template('dev_created.html', user=current_user, games=games)
+
+@app.route('/dev/game/new', methods=['POST', 'GET'])
 @login_required
 def dev_game_new():
     if not current_user.is_developer:
         return redirect('index')
-    return render_template('dev_game_new.html', user=current_user)
+
+    form = DevNewGameForm(request.form)
+    if request.method == 'POST' and form.validate():
+        title = form.data['title']
+        desc = form.data['description']
+        genres = form.data['genres']
+        price = form.data['price']
+        Game(title=title, description=desc, genres=genres, price=price, developer=current_user)
+        return redirect(url_for('created'))
+    return render_template('dev_game_new.html', user=current_user, form=form)
 
 @app.route('/dev/game/<int:id>')
 @login_required

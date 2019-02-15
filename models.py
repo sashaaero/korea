@@ -25,6 +25,8 @@ class Game(db.Entity):
     scores = Set('Score')
     users = Set(User)
     price = Optional(int)
+    small = Optional(str)
+    cover = Optional(str)
     developer = Required(User)
 
 

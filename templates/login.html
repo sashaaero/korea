@@ -23,7 +23,6 @@
                                     <small class="text-danger">{{ form.errors['login'][0] }}</small>
                                 {% endif %}
                             </div>
-
                             <div class="form-group">
                                 <input type="password" name="pwd" id="pwd" class="form-control input-sm" placeholder="Password">
                             </div>
@@ -31,7 +30,8 @@
                                 <small class="text-danger">{{ form.errors['pwd'][0] }}</small>
                             {% endif %}
 			    			<input type="submit" value="Login" class="btn btn-info btn-block">
-
+                             <br>
+                            <p align="center"><a href="{{ url_for('dev_login') }}">for developers</a></p>
 			    		</form>
 			    	</div>
 	    		</div>

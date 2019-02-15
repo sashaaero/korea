@@ -62,6 +62,15 @@ def dev_pwd_check(form, field):
 	if dev.pwd != pwd:
 		raise ValidationError('Password do not match. Try again')
 
+def positive_integer_check(form, field):
+	value = field.data
+	try:
+		v = int(value)
+	except Exception:
+		raise ValidationError('integer required')
+
+	if v < 0:
+		raise ValidationError('positive number required')
 
 class RegForm(Form):
 	login = StringField('Login', [InputRequired(), login_free])
@@ -90,4 +99,8 @@ class DevLoginForm(Form):
 class DevNewGameForm(Form):
 	title = StringField('Title', [InputRequired()])
 	description = StringField('Description', [InputRequired()])
-	image = FileField('Image')
+	genres = StringField('Genres', [InputRequired()])
+	price = IntegerField('Price', [InputRequired(), positive_integer_check])
+	small = StringField('Small', [InputRequired()])
+	cover = StringField('Small', [InputRequired()])
+	# image = FileField('Image')
