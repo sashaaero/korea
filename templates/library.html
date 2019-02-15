@@ -1,5 +1,42 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<table class="table">
+<thead>
+<tr>
+    <th>
+        Game
+    </th>
+    <th>
+        Developer
+    </th>
+    <th>
+        Rating
+    </th>
+</tr>
+</thead>
+    {% for game in games %}
+        <tr>
+        <td>
+            {% if game.small %}
+                <img src="{{ game.small }}" width="20" height="20"/>
+            {% endif %}
+            <a href="{{ url_for('game', id=game.id) }}">{{ game.title }}</a>
+        </td>
+        <td>
 
+            {{ game.developer.login }}
+        </td>
+        <td>
+            {{ (game.scores|sum(attribute='value') / game.scores|length) if game.scores|length != 0 else 0.0 }}
+        </td>
+        </tr>
+    {% endfor %}
+</table>
+</div>
+</div>
+</div>
 {% endblock %}

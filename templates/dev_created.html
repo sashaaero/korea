@@ -8,10 +8,10 @@
 {% for game in games %}
     <tr>
         <td>
-            {{ game.title }}
+            <a href="{{ url_for('game', id=game.id) }}">{{ game.title }}</a>
         </td>
         <td class="text-center">
-            Rating: {{ (sum(game.scores.value) / game.scores|length ) if game.scores|length != 0 else 0.0 }}
+            Rating: {{ (game.scores|sum(attribute='value') / game.scores|length ) if game.scores|length != 0 else 0.0 }}
         </td>
         <td class="text-right">
             <a href="{{ url_for('dev_game', id=game.id) }}">Edit</a>

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<form method="POST">
+<div class="form-group">
+    <label for="title">How much would you add</label><br>
+    <input class="form-control input-sm" name="funds" id="funds" placeholder="funds" type="number"/>
+</div>
+<input type="submit" value="Add" class="btn btn-secondary btn-block">
+</form>
+</div>
+</div>
+</div>
+{% endblock %}

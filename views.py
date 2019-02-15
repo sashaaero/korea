@@ -54,7 +54,9 @@ def profile():
 @app.route('/library')
 @login_required
 def library():
-    return render_template('library.html', user=current_user)
+    games = select(g for g in Game if g in current_user.games_owned).order_by(Game.title)
+    # games = current_user.games_owned
+    return render_template('library.html', user=current_user, games=games)
 
 @app.route('/store')
 def store():
@@ -63,17 +65,53 @@ def store():
 
 @app.route('/game/<int:id>')
 def game(id):
-    return render_template('game.html', user=current_user)
+    game = Game.get(id=id)
+    scores = select(s for s in Score if s.game == game).order_by(Score.dt)
+    if game is None:
+        return redirect(page_not_found)
+    return render_template('game.html', user=current_user, game=game, scores=scores)
+
+@app.route('/post_score', methods=['POST'])
+def post_score():
+    game_id = request.form['id']
+    score = request.form['score']
+    text = request.form['text']
+    game = Game.get(id=game_id)
+    print(game_id)
+    if game is not None:
+        Score(game=game, value=int(score), text=text, user=current_user, dt=datetime.now())
+    return redirect(url_for('game', id=game_id))
 
 @app.route('/purchase/<int:id>')
 @login_required
 def purchase(id):
-    return render_template('purchase.html', user=current_user)
+    game = Game.get(id=id)
+    user = current_user
+    if game not in user.games_owned:
+        if user.money >= game.price:
+            Transaction(type='Buy', value=-game.price, user=user, description=game.title, dt=datetime.now())
+            user.money -= game.price
+            user.games_owned.add(game   )
+    return redirect(url_for('game', id=id))
 
-@app.route('/transaction') # random hash?
+@app.route('/add_funds', methods=['POST', 'GET'])
 @login_required
-def transaction():
-    return render_template('transaction.html', user=current_user)
+def add_funds():
+    if request.method == 'POST':
+        money = request.form['funds']
+        try:
+            money = int(money)
+        except:
+            money = 0
+        t = Transaction(type='Add', value=money, user=current_user, dt=datetime.now())
+        current_user.money += money
+        return redirect(url_for('index'))
+    return render_template('add_funds.html', user=current_user)
+
+# @app.route('/transaction') # random hash?
+# @login_required
+# def transaction():
+#     return render_template('transaction.html', user=current_user)
 
 @app.route('/dev/reg', methods=['POST', 'GET'])
 def dev_reg():
@@ -113,14 +151,48 @@ def dev_game_new():
         desc = form.data['description']
         genres = form.data['genres']
         price = form.data['price']
-        Game(title=title, description=desc, genres=genres, price=price, developer=current_user)
+        small = form.data['small'] or None
+        cover = form.data['cover'] or None
+        Game(title=title, description=desc, genres=genres, price=price, developer=current_user, small=small, cover=cover)
         return redirect(url_for('created'))
     return render_template('dev_game_new.html', user=current_user, form=form)
 
-@app.route('/dev/game/<int:id>')
+@app.route('/dev/game/<int:id>', methods=['POST', 'GET'])
 @login_required
 def dev_game(id):
     if not current_user.is_developer:
         return redirect('index')
-    return render_template('dev_game.html', user=current_user)
+    # game = Game.get(id=id)
+    game = select(g for g in Game if g.id == id).prefetch(Score, Game.developer).first()
+    if game is None:
+        return redirect(page_not_found)
+    if game.developer.id != current_user.id:
+        return redirect(url_for('game', id=id))
+
+    if request.method == 'POST':
+        game.title = request.form['title']
+        game.desc = request.form['description']
+        game.genres = request.form['genres']
+        game.price = request.form['price']
+        game.small = request.form['small'] or None
+        game.cover = request.form['cover'] or None
+    return render_template('dev_game.html', user=current_user, game=game)
+
+@app.route('/dev/delete_score/<int:game_id>/<int:score_id>')
+@login_required
+def dev_delete_score(game_id, score_id):
+    game = Game.get(id=game_id)
+    if game is None or game.developer.id != current_user.id:
+        return redirect(url_for('game', id=game_id))
+    delete(s for s in Score if s.id == score_id)
+    return redirect(url_for('game', id=game_id))
+
+
+
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
 

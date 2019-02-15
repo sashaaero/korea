@@ -1,5 +1,6 @@
 from pony.orm import *
 from flask_login import UserMixin
+from datetime import datetime
 
 db = Database()
 
@@ -15,6 +16,7 @@ class User(db.Entity, UserMixin):
     games_owned = Set('Game', reverse='users')
     games_created = Set('Game', reverse='developer')
     transactions = Set('Transaction')
+    money = Required(int, default=0)
 
 
 class Game(db.Entity):
@@ -36,6 +38,7 @@ class Score(db.Entity):
     user = Required(User)
     value = Optional(int)
     text = Optional(str)
+    dt = Required(datetime)
 
 
 class Transaction(db.Entity):
@@ -44,3 +47,4 @@ class Transaction(db.Entity):
     value = Required(int)
     user = Required(User)
     description = Optional(str)
+    dt = Required(datetime)

@@ -1,5 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+<form method="POST">
+<div class="form-group">
+    <label for="title">Title</label><br>
+    <input name="title" id="title" placeholder="Title" type="text" value="{{ game.title }}"/><br>
+</div>
+<div class="form-group">
+    <label for="desc">Description</label><br>
+    <textarea name="description" placeholder="Description" id="desc" cols="40" rows="5">{{ game.description }}</textarea>
+</div>
+<div class="form-group">
+    <label for="genres">Genres</label><br>
+    <input name="genres" placeholder="Genres" type="text" value="{{ game.genres }}"/><br>
+</div>
+<div class="form-group">
+    <label>Price</label><br>
+    <input name="price" type="number" value="{{ game.price }}"/><br>
+</div>
+<div class="form-group">
+    <label>Small icon URL</label><br>
+    <input name="small" type="url" value="{{ game.small }}"><br>
+</div>
+<div class="form-group">
+    <label>Large Cover</label><br>
+    <input name="cover" type="url" value="{{ game.cover }}">
+</div>
+<!--Image: <input type="file" name="image" accept=".png,.jpg,.bmp"/>-->
+<input type="submit" value="Save game">
+</form>
+</div>
+</div>
+</div>
 {% endblock %}

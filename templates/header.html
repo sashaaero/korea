@@ -1,6 +1,8 @@
 <html>
 <head>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="../static/main_styles.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
 </html>
 <body>
@@ -12,9 +14,9 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           {% if user.is_authenticated %}
-          <li class="nav-item">
+          <!--li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'profile' %} active {% endif %}" href="{{ url_for('profile') }}">Profile</a>
-          </li>
+          </li-->
           {% endif %}
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'store' %} active {% endif %}" href="{{ url_for('store') }}">Store</a>
@@ -37,6 +39,19 @@
         <div class="mt-2 mt-md-0">
         <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
+            <li class="nav-item">
+            <div class="nav-link mr-sm-2">
+                Hello, {{ user.login }}!
+                {% if not user.is_developer %}
+                    Your balance: ${{ user.money }}
+                {% endif %}
+            </div>
+            </li>
+            {% if not user.is_developer %}
+            <li class="nav-item">
+                <a class="nav-link mr-sm-2" href="{{ url_for('add_funds') }}">Add funds</a>
+            </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link mr-sm-2" href="{{ url_for('logout') }}">Logout</a>
             </li>

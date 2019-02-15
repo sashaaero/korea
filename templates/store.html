@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3>СДЕЛАТЬ ФИЛЬТР-ПОИСК!!! (стырить с курсача елкина)</h3>
+
 <div class="container">
 <div class=" justify-content-center">
 <div class="col-12">
+<div class="inline">
+    <input class="form-control mr-sm-2" type="search" id="myInput" placeholder="Фильтр" aria-label="Search">
+</div>
 <table class="table">
 <thead>
 <tr>
     <th>
-        Developer
+        Game
     </th>
     <th>
-        Game
+        Developer
     </th>
     <th>
         Rating
@@ -20,32 +23,43 @@
     <th>
         Price
     </th>
-    <th>
-        Game page
-    </th>
 </tr>
 </thead>
+<tbody id="myTable">
     {% for game in games %}
         <tr>
         <td>
+            {% if game.small %}
+                <img src="{{ game.small }}" width="20" height="20"/>
+            {% endif %}
+            <a href="{{ url_for('game', id=game.id) }}">{{ game.title }}</a>
+        </td>
+        <td>
+
             {{ game.developer.login }}
         </td>
         <td>
-            {{ game.title }}
-        </td>
-        <td>
-            {{ (sum(game.scores.values) / game.scores|length) if game.scores|length != 0 else 0.0 }}
+            {{ (game.scores|sum(attribute='value') / game.scores|length) if game.scores|length != 0 else 0.0 }}
         </td>
         <td>
             {{ game.price }}
         </td>
-        <td>
-            <a href="{{ url_for('game', id=game.id) }}">Visit</a>
-        </td>
         </tr>
     {% endfor %}
+</tbody>
 </table>
 </div>
 </div>
 </div>
+
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 {% endblock %}
