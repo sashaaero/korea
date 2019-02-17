@@ -8,27 +8,45 @@
 <form method="POST">
 <div class="form-group">
     <label for="title">Title</label><br>
-    <input name="title" id="title" placeholder="Title" type="text"/><br>
+    <input name="title" id="title" placeholder="Title" value="{{ form.data['title'] }}" type="text"/><br>
+    {% if 'title' in form.errors %}
+        <small class="text-danger">{{ form.errors['title'][0] }}</small>
+    {% endif %}
 </div>
 <div class="form-group">
     <label for="desc">Description</label><br>
-    <textarea name="description" placeholder="Description" id="desc" cols="40" rows="5"></textarea>
+    <textarea name="description" placeholder="Description" id="desc" cols="40" rows="5">{{ form.data['description'] }}</textarea><br>
+    {% if 'description' in form.errors %}
+        <small class="text-danger">{{ form.errors['description'][0] }}</small>
+    {% endif %}
 </div>
 <div class="form-group">
     <label for="genres">Genres</label><br>
-    <input name="genres" placeholder="Genres" type="text"/><br>
+    <input name="genres" placeholder="Genres" value="{{ form.data['genres'] }}"type="text"/><br>
+    {% if 'genres' in form.errors %}
+        <small class="text-danger">{{ form.errors['genres'][0] }}</small>
+    {% endif %}
 </div>
 <div class="form-group">
     <label>Price</label><br>
-    <input name="price" type="number"/><br>
+    <input name="price" type="number" value="{{ form.data['price'] }}"/><br>
+    {% if 'price' in form.errors %}
+        <small class="text-danger">{{ form.errors['price'][0] }}</small>
+    {% endif %}
 </div>
 <div class="form-group">
     <label>Small icon URL</label><br>
-    <input name="small" type="url"><br>
+    <input name="small" type="url" value="{{ form.data['small'] }}"><br>
+    {% if 'small' in form.errors %}
+        <small class="text-danger">{{ form.errors['small'][0] }}</small>
+    {% endif %}
 </div>
 <div class="form-group">
     <label>Large Cover</label><br>
-    <input name="cover" type="url">
+    <input name="cover" type="url" value="{{ form.data['cover'] }}"><br>
+    {% if 'cover' in form.errors %}
+        <small class="text-danger">{{ form.errors['cover'][0] }}</small>
+    {% endif %}
 </div>
 <!--Image: <input type="file" name="image" accept=".png,.jpg,.bmp"/>-->
 <input type="submit" value="Create game">

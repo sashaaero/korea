@@ -91,7 +91,7 @@ def purchase(id):
         if user.money >= game.price:
             Transaction(type='Buy', value=-game.price, user=user, description=game.title, dt=datetime.now())
             user.money -= game.price
-            user.games_owned.add(game   )
+            user.games_owned.add(game)
     return redirect(url_for('game', id=id))
 
 @app.route('/add_funds', methods=['POST', 'GET'])
@@ -192,10 +192,6 @@ def dev_delete_score(game_id, score_id):
         return redirect(url_for('game', id=game_id))
     delete(s for s in Score if s.id == score_id)
     return redirect(url_for('game', id=game_id))
-
-
-
-
 
 @app.errorhandler(404)
 def page_not_found(e):
