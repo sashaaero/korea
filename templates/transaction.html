@@ -1,5 +1,36 @@
+{% set title='Transactions' %}
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container">
+<div class=" justify-content-center">
+<div class="col-12">
+{% if transactions|length == 0 %}
+    You have no transactions
+{% else %}
+<table class="table">
+<thead>
+<tr>
+    <th>Type</th>
+    <th>Value</th>
+    <th>Description</th>
+    <th>Datetime</th>
+</tr>
+</thead>
+<tbody>
+{% for t in transactions %}
+    <tr>
+    <td>{{ t.type }}</td>
+    <td>{{ t.value }} USD</td>
+    <td>{{ t.description }}</td>
+    <td>{{ t.dt.strftime('%Y-%m-%d %H:%M') }}</td>
+    </tr>
+{% endfor %}
+</tbody>
+</table>
 
+{% endif %}
+</div>
+</div>
+</div>
 {% endblock %}

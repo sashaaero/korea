@@ -1,9 +1,14 @@
+{% set title='Published games' %}
 {% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
 <div class=" justify-content-center">
 <div class="col-12">
+{% if games|length == 0 %}
+<h3>You did not publish any game yet</h3><br>
+<a href="{{ url_for('dev_game_new') }}">Publish game</a>
+{% else %}
 <table class="table">
 {% for game in games %}
     <tr>
@@ -22,5 +27,6 @@
 </div>
 </div>
 </div>
+{% endif %}
 
 {% endblock %}

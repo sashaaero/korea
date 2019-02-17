@@ -1,3 +1,4 @@
+{% set title=game.title %}
 {% extends 'base.html' %}
 
 {% block content %}
@@ -20,7 +21,7 @@
     </div>
     <br><br>
     Developed by {{ game.developer.login }}<br>
-    {% if not user.is_developer %}
+    {% if user.is_authenticated and not user.is_developer %}
         {% if game in user.games_owned %}
             You own this game
         {% else %}
@@ -33,7 +34,7 @@
     {% endif %}
     <!--/p-->
     <br><br>
-    {% if game in user.games_owned %}
+    {% if user.is_authenticated and game in user.games_owned %}
     <h3>Post your score</h3>
     <form class="centered-form" method="POST" action="{{ url_for('post_score') }}">
         <input type="hidden" name="id" value="{{ game.id }}"/>
@@ -54,6 +55,7 @@
         <input type="submit" class="btn btn-block" value="Submit score">
     </form>
     {% endif %}
+    {% if scores|length > 0 %}
     <br>
     <h3>All scores</h3>
     <table class="table">
@@ -102,6 +104,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 </div>
 </div>
 </div>

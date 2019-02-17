@@ -108,6 +108,12 @@ def add_funds():
         return redirect(url_for('index'))
     return render_template('add_funds.html', user=current_user)
 
+@app.route('/transactions')
+@login_required
+def transactions():
+    t = select(t for t in Transaction if t.user == current_user).order_by(Transaction.dt)[:]
+    return render_template('transaction.html', user=current_user, transactions=t)
+
 # @app.route('/transaction') # random hash?
 # @login_required
 # def transaction():

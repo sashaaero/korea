@@ -1,9 +1,14 @@
+{% set title='Library' %}
 {% extends 'base.html' %}
 
 {% block content %}
 <div class="container">
 <div class=" justify-content-center">
 <div class="col-12">
+{% if games|length == 0 %}
+<h3>Your library is empty</h3><br>
+Check our games at the <a href="{{ url_for('store') }}">store</a>
+{% else %}
 <table class="table">
 <thead>
 <tr>
@@ -36,6 +41,7 @@
         </tr>
     {% endfor %}
 </table>
+{% endif %}
 </div>
 </div>
 </div>
